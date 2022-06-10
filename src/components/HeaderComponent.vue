@@ -20,6 +20,12 @@
 <script>
 export default {
   name: "HeaderComponent",
+  data() {
+    return {};
+  },
+  mounted() {
+    console.log(process.env.VUE_APP_API_KEY);
+  },
 };
 </script>
 

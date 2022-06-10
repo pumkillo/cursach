@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import HeaderComponent from "./components/HeaderComponent.vue";
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default {
   components: {
@@ -43,6 +43,7 @@ export default {
   padding: 0;
   margin: 0;
   text-decoration: none !important;
+  font-feature-settings: "pnum" on, "lnum" on;
 }
 body {
   margin: 0 auto;
