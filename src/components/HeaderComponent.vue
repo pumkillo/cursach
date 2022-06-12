@@ -2,17 +2,13 @@
   <div class="header">
     <div class="d-flex justify-content-between">
       <router-link :to="{ name: 'main' }">Main page</router-link>
-      <!-- <router-link :to="{ name: 'about' }">Favorites</router-link> -->
-      <!-- <router-link :to="{ name: 'home' }">Filter search</router-link> -->
-      <!-- <router-link :to="{ name: 'home' }">Quick answer</router-link> -->
-      <!-- <router-link :to="{ name: 'home' }">Random reciepe</router-link> -->
-      <!-- <router-link :to="{ name: 'home' }">Ingredients search</router-link> -->
-
-      <a href="#">Favorites</a>
-      <a href="#">Filter search</a>
-      <a href="#">Quick answer</a>
-      <a href="#">Random reciepe</a>
-      <a href="#">Ingredients search</a>
+      <router-link :to="{ name: 'favorites' }">Favorites</router-link>
+      <router-link :to="{ name: 'filterSearch' }">Filter search</router-link>
+      <router-link :to="{ name: 'quickAnswer' }">Quick answer</router-link>
+      <router-link :to="{ name: 'randomReciepe' }">Random reciepe</router-link>
+      <router-link :to="{ name: 'ingredientsSearch' }"
+        >Ingredients search</router-link
+      >
     </div>
   </div>
 </template>
@@ -23,23 +19,11 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    console.log(process.env.VUE_APP_API_KEY);
-  },
 };
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/style.scss";
-.header {
-  background-color: $green;
-  padding: 25px 0 20px 0;
-  margin-bottom: 60px;
-}
-.header > .d-flex {
-  margin: 0 auto;
-  max-width: 1100px !important;
-}
+@import "@/assets/variables.scss";
 a {
   font-weight: 500;
   font-size: 2.5em;
