@@ -1,46 +1,36 @@
 <template>
   <div class="needpad">
     <div class="title d-flex justify-content-center align-items-center">
-      <h1>Falafel Burger</h1>
+      <h1>{{ recipe.title }}</h1>
       <img src="@/assets/icons/likeNotFill.svg" alt="" />
     </div>
     <div class="full-info d-flex flex-row justify-content-between">
       <div class="d-flex flex-column align-items-center">
-        <RecipeCard :needBackColor="true" />
-        <NutritionalInformation />
-        <TasteWidgetById />
-        <SimilarRecipes />
+        <RecipeCard :needBackColor="true" :recipeID="recipeID" />
+        <NutritionalInformation :recipeID="recipeID" />
+        <TasteWidgetById :recipeID="recipeID" />
+        <SimilarRecipes :recipeID="recipeID" />
       </div>
       <div class="d-flex flex-column align-items-center">
         <DishTypesAndDiets
-          :dishTypes="['lunch', 'main course', 'main dish', 'dinner']"
-          :diets="['dairy free', 'lacto ovo vegetaria']"
+          :dishTypes="recipe.dishTypes"
+          :diets="recipe.diets"
         />
-        <NutritionDiagrams />
+        <NutritionDiagrams :recipeID="recipeID" />
         <div class="description">
-          <h4>Be ready in 45 minutes</h4>
-          <p>
-            You can never have too many middl eastern recipes, so give Falafel
-            Burger a try. For $1.37 per serving, this recipe covers 19% of your
-            daily requirements of vitamins and minerals. One portion of this
-            dish contains around 12g of protein, 20g of fat, and a total of 402
-            calories. This recipe serves 4. It is brought to you by Foodista. 4
-            people were impressed by this recipe. Head to the store and pick up
-            onion, garlic, sriracha sauce, and a few other things to make it
-            today. Only a few people really liked this main course. From
-            preparation to the plate, this recipe takes about about 45 minutes.
-            It is a good option if you're following a dairy free and lacto ovo
-            vegetarian diet. With a spoonacular score of 81%, this dish is
-            spectacular.
-          </p>
+          <h4>Be ready in {{ recipe.readyInMinutes }} minutes</h4>
+          <p v-html="recipe.summary"></p>
         </div>
-        <RecipeInstruction />
+        <RecipeInstruction :recipeID="recipeID" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes/recipeInfo");
+
 import RecipeCard from "@/components/RecipeCard.vue";
 import NutritionDiagrams from "@/components/NutritionDiagrams.vue";
 import TasteWidgetById from "../components/TasteWidgetById.vue";
@@ -51,7 +41,6 @@ import NutritionalInformation from "@/components/NutritionalInformation.vue";
 
 export default {
   name: "RecipeView",
-  props: [""],
   components: {
     RecipeCard,
     NutritionDiagrams,
@@ -62,7 +51,33 @@ export default {
     NutritionalInformation,
   },
   data() {
-    return {};
+    return {
+      recipe: {},
+    };
+  },
+  computed: {
+    recipeID() {
+      return this.$route.params.id;
+    },
+  },
+  watch: {
+    recipeID() {
+      this.getRecipeInfo();
+      window.scrollTo(0, top);
+    },
+  },
+  mounted() {
+    this.getRecipeInfo();
+  },
+  methods: {
+    ...mapActions(["getAllRecipeInfo"]),
+    async getRecipeInfo() {
+      if (this.recipeID) {
+        await this.getAllRecipeInfo(this.recipeID).then(
+          (response) => (this.recipe = response)
+        );
+      }
+    },
   },
 };
 </script>

@@ -1,16 +1,18 @@
 <template>
   <div class="similar d-flex flex-column">
     <h4>Similar recipes</h4>
-    <div class="d-flex justify-content-between">
-      <div class="recipe d-flex flex-column" v-for="item in 3" :key="item.id">
-        <img
-          src="https://spoonacular.com/recipeImages/1063020-556x370.jpg"
-          alt=""
-        />
+    <h5 v-if="similarRecipes.length == 0">No similar recipes found.</h5>
+    <div class="d-flex justify-content-between" v-else>
+      <div
+        class="recipe d-flex flex-column"
+        v-for="recipe in similarRecipes"
+        :key="recipe.id"
+      >
+        <img :src="recipe.image" alt="" />
         <router-link
           class="decoration"
-          :to="{ name: 'recipe', params: { id: 98 } }"
-          ><h3>Clean eating falafel burger</h3></router-link
+          :to="{ name: 'recipe', params: { id: recipe.id } }"
+          ><h3>{{ recipe.title }}</h3></router-link
         >
       </div>
     </div>
@@ -18,12 +20,48 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes");
 export default {
   name: "SimilarRecipes",
   props: ["recipeID"],
-  components: {},
   data() {
-    return {};
+    return {
+      similarRecipes: [],
+    };
+  },
+  watch: {
+    recipeID() {
+      this.getSimilar();
+    },
+  },
+  mounted() {
+    this.getSimilar();
+  },
+  methods: {
+    ...mapActions({
+      getSimilarRecipes: "similarRecipes/getSimilarRecipes",
+      getRecipeImage: "recipeImage/getRecipeImage",
+    }),
+    async getSimilar() {
+      const res = await this.getSimilarRecipes(this.recipeID).then(
+        (response) => response
+      );
+      if (res.length != 3) {
+        res.splice(-1, 1);
+        this.similarRecipes = res;
+      }
+      this.similarRecipes.forEach((recipe) => {
+        const recipeImage = this.getImage(recipe.id).then(
+          (response) => (recipe.image = response)
+        );
+      });
+    },
+    async getImage(id) {
+      const image = await this.getRecipeImage(id).then((response) => response);
+      return image;
+    },
   },
 };
 </script>

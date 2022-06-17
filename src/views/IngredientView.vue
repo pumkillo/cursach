@@ -1,16 +1,15 @@
 <template>
   <div class="needpad">
     <div class="title d-flex justify-content-center align-items-center">
-      <h1>Canned garbanzo beans</h1>
+      <h1>{{ ingredient.originalName }}</h1>
     </div>
     <div class="full-info d-flex flex-row justify-content-between">
       <div class="d-flex flex-column align-items-center">
-        <IngredientCard />
+        <IngredientCard :ingredientID="ingredientID" />
         <NutritionalInformation />
       </div>
       <div class="d-flex flex-column align-items-center">
         <NutritionDiagrams />
-        <TasteWidgetById />
         <IngredientSubstitutes />
       </div>
     </div>
@@ -18,24 +17,38 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Ingredients/ingredientInfo");
 import NutritionDiagrams from "@/components/NutritionDiagrams.vue";
-import TasteWidgetById from "../components/TasteWidgetById.vue";
 import NutritionalInformation from "@/components/NutritionalInformation.vue";
 import IngredientCard from "@/components/IngredientCard.vue";
 import IngredientSubstitutes from "@/components/IngredientSubstitutes.vue";
 
 export default {
-  name: "RecipeView",
-  props: [""],
+  name: "IngredienteView",
   components: {
     NutritionDiagrams,
-    TasteWidgetById,
     NutritionalInformation,
     IngredientCard,
     IngredientSubstitutes,
   },
   data() {
-    return {};
+    return {
+      ingredient: "",
+    };
+  },
+  computed: {
+    ingredientID() {
+      return this.$route.params.id;
+    },
+  },
+  methods: {
+    ...mapActions(["getAllIngredientInfo"]),
+    async getInfo() {
+      await this.getAllIngredientInfo(this.ingredientID).then(
+        (response) => (this.ingredient = response)
+      );
+    },
   },
 };
 </script>

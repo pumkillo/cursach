@@ -3,21 +3,62 @@
     class="recipeCard d-flex flex-column"
     :class="{ backGroundColor: needBackColor }"
   >
-    <img src="https://spoonacular.com/recipeImages/642539-556x370.png" alt="" />
-    <RecIngrCategories :categoriesArray="['vegetarian', 'dairy-free']" />
+    <img :src="recipe.image" alt="Recipe Image" />
+    <RecIngrCategories :categoriesArray="categoriesArray" />
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes/recipeInfo");
 import RecIngrCategories from "@/components/RecIngrCategories.vue";
 export default {
   name: "RecipeCard",
-  props: ["needBackColor"],
+  props: ["needBackColor", "recipeID"],
   components: {
     RecIngrCategories,
   },
+  computed: {
+    categoriesArray() {
+      let obj = {
+        vegetarian: this.recipe.vegetarian,
+        vegan: this.recipe.vegan,
+        glutenFree: this.recipe.glutenFree,
+        dairyFree: this.recipe.dairyFree,
+        veryHealthy: this.recipe.veryHealthy,
+        cheap: this.recipe.cheap,
+        veryPopular: this.recipe.veryPopular,
+        sustainable: this.recipe.sustainable,
+        lowFodmap: this.recipe.lowFodmap,
+      };
+      let arr = Object.entries(obj);
+      const res = arr.filter((pair) => pair[1] == true);
+      return res;
+    },
+  },
   data() {
-    return {};
+    return {
+      recipe: {},
+    };
+  },
+  watch: {
+    recipeID() {
+      this.getRecipeCard();
+    },
+  },
+  mounted() {
+    this.getRecipeCard();
+  },
+  methods: {
+    ...mapActions(["getAllRecipeInfo"]),
+    async getRecipeCard() {
+      if (this.recipeID) {
+        const res = await this.getAllRecipeInfo(this.recipeID).then(
+          (response) => response
+        );
+        this.recipe = res;
+      }
+    },
   },
 };
 </script>
@@ -35,10 +76,10 @@ export default {
   max-width: 490px;
 }
 img {
+  width: auto;
   margin: 0 auto;
   border-radius: 0.5em;
   max-width: 450px;
   max-height: 300px;
-  width: 65vw;
 }
 </style>

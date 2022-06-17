@@ -1,24 +1,37 @@
 <template>
   <div class="instruction d-flex flex-column">
-    <h4>Insruction</h4>
-    <div class="steps d-flex flex-column">
-      <div class="step d-flex flex-column" v-for="item in 4" :key="item.id">
+    <h4>Instruction</h4>
+    <h5 v-if="response.length == 0">No instruction found.</h5>
+    <div class="steps d-flex flex-column" v-for="res in response" :key="res.id">
+      <p>{{ res.name }}</p>
+      <div
+        class="step d-flex flex-column"
+        v-for="step in res.steps"
+        :key="step.id"
+      >
         <p>
-          3. Using your clean hands incorporate tahini, sriracha, parsley and
-          onion into the chickpea mixture.
+          <span>{{ step.number }}.</span>{{ step.step }}
         </p>
-        <div class="step-illustrations d-flex flex-wrap justify-content-center">
+        <div
+          class="step-illustrations d-flex flex-row flex-wrap justify-content-center align-items-end"
+        >
           <router-link
-            :to="{ name: 'ingredient', params: { id: 9 } }"
+            :to="{ name: 'ingredient', params: { id: ingredient.id } }"
             class="step-illustration d-flex flex-column"
-            v-for="item in 2"
-            :key="item.id"
+            v-for="ingredient in step.ingredients"
+            :key="ingredient.id"
           >
             <img
-              src="https://spoonacular.com/cdn/ingredients_100x100/chickpeas.png"
-              alt="chickpeas"
+              :src="baseURLIngredients + ingredient.image"
+              :alt="ingredient.name"
+              v-if="ingredient.image"
             />
-            <p>canned chickpeas</p>
+            <img
+              src="@/assets/icons/ingredient.svg"
+              alt="ingredient none"
+              v-else
+            />
+            <p>{{ ingredient.name }}</p>
           </router-link>
         </div>
       </div>
@@ -27,11 +40,37 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes/recipeInstruction");
 export default {
   name: "RecipeInstruction",
   props: ["recipeID"],
   data() {
-    return {};
+    return {
+      response: [],
+      baseURLIngredients: process.env.VUE_APP_BASE_INGREDIENT_URL,
+    };
+  },
+  mounted() {
+    this.instruction();
+  },
+  watch: {
+    recipeID() {
+      this.instruction();
+    },
+  },
+  beforeRouteUpdate() {
+    this.instruction();
+  },
+  methods: {
+    ...mapActions(["getRecipeInstruction"]),
+    async instruction() {
+      const res = await this.getRecipeInstruction(this.recipeID)
+        .catch((this.loading = true))
+        .then((response) => response);
+      this.response = res;
+    },
   },
 };
 </script>
@@ -46,7 +85,12 @@ p {
   font-size: calc(2em + 2px);
   margin-bottom: 0;
   line-height: 21px;
+  text-indent: 10px;
   color: $brown;
+}
+p > span {
+  font-size: inherit;
+  margin-right: 5px;
 }
 img {
   max-width: 100px;
@@ -62,9 +106,9 @@ img {
 .step-illustrations {
   margin: 0 auto;
   gap: 30px;
-  max-width: 300px;
 }
 .step-illustration > p {
   font-size: 2em;
+  text-align: center;
 }
 </style>

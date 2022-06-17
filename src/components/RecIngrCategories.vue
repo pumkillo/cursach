@@ -6,7 +6,8 @@
       :key="item.id"
     >
       <div class="circle"></div>
-      <p>{{ item }}</p>
+      <p v-if="$route.name == 'recipe'">{{ toKebab(item[0]) }}</p>
+      <p v-else>{{ item[0] }}</p>
     </div>
   </div>
 </template>
@@ -17,6 +18,18 @@ export default {
   props: ["categoriesArray"],
   data() {
     return {};
+  },
+  methods: {
+    toKebab(str) {
+      return str
+        .split("")
+        .map((letter, idx) => {
+          return letter.toUpperCase() === letter
+            ? `${idx !== 0 ? "-" : ""}${letter.toLowerCase()}`
+            : letter;
+        })
+        .join("");
+    },
   },
 };
 </script>

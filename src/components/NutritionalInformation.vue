@@ -6,30 +6,30 @@
         <p class="legend">Element</p>
         <p class="legend">Amount</p>
         <p class="legend">Day norm</p>
-        <div class="d-grid column" v-for="item in 4" :key="item.id">
-          <p>Calories</p>
-          <p>366k</p>
-          <p>18.32%</p>
+        <div class="d-grid column" v-for="item in info" :key="item.id">
+          <p>{{ item.title }}</p>
+          <p>{{ item.amount }}</p>
+          <p>{{ item.percentOfDailyNeeds }}%</p>
         </div>
       </div>
     </div>
     <div class="article-info d-flex flex-column">
       <h4>Harmful elements</h4>
       <div class="d-grid">
-        <div class="d-grid column" v-for="item in 2" :key="item.id">
-          <p>Calories</p>
-          <p>366k</p>
-          <p>18.32%</p>
+        <div class="d-grid column" v-for="item in bad" :key="item.id">
+          <p>{{ item.title }}</p>
+          <p>{{ item.amount }}</p>
+          <p>{{ item.percentOfDailyNeeds }}%</p>
         </div>
       </div>
     </div>
     <div class="article-info d-flex flex-column">
       <h4>Healthy elements</h4>
       <div class="d-grid">
-        <div class="d-grid column" v-for="item in 2" :key="item.id">
-          <p>Calories</p>
-          <p>366k</p>
-          <p>18.32%</p>
+        <div class="d-grid column" v-for="item in good" :key="item.id">
+          <p>{{ item.title }}</p>
+          <p>{{ item.amount }}</p>
+          <p>{{ item.percentOfDailyNeeds }}%</p>
         </div>
       </div>
     </div>
@@ -37,11 +37,45 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes/recipeNutrition");
 export default {
   name: "NutritionalInformation",
   props: ["recipeID"],
   data() {
-    return {};
+    return {
+      nutrition: {},
+      bad: [],
+      good: [],
+      info: [],
+    };
+  },
+  mounted() {
+    this.getInfo();
+  },
+  watch: {
+    recipeID() {
+      this.getInfo();
+    },
+  },
+  methods: {
+    ...mapActions(["getRecipeNutrition"]),
+    async getInfo() {
+      const res = await this.getRecipeNutrition(this.recipeID).then(
+        (response) => (this.nutrition = response)
+      );
+      this.bad = this.nutrition.bad;
+      this.good = this.nutrition.good;
+      this.info = this.parseElements();
+    },
+    parseElements() {
+      let protein = this.good[0];
+      let other = this.bad.filter((el) =>
+        ["Calories", "Fat", "Carbohydrates"].includes(el.title)
+      );
+      return other.concat(protein);
+    },
   },
 };
 </script>
@@ -50,11 +84,11 @@ export default {
 @import "@/assets/variables.scss";
 .info {
   gap: 25px;
-  padding: 0 20px;
+  padding-left: 8em;
   width: 100%;
 }
 .d-grid {
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(3, 1fr);
   width: 100%;
   max-width: 500px;
 }

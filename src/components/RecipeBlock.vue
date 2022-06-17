@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'recipe', params: { id: 5 } }">
+  <router-link :to="{ name: 'recipe', params: { id: recipeObject.id } }">
     <div
       class="recipe d-flex flex-column"
       :style="{
@@ -8,14 +8,14 @@
       }"
     >
       <img
-        src="https://spoonacular.com/recipeImages/642539-556x370.png"
+        :src="recipeObject.image"
         alt=""
         :style="{ maxWidth: maxWidthImg + 'px' }"
       />
       <div class="d-flex flex-row justify-content-between">
         <div class="d-flex flex-column">
-          <p>falafel burger</p>
-          <p>366kkal</p>
+          <p>{{ recipeObject.title }}</p>
+          <p>{{ kkal }}cal</p>
         </div>
         <img src="../assets/icons/likeNotFill.svg" alt="" />
       </div>
@@ -24,11 +24,25 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes/recipeNutrition");
 export default {
   name: "RecipeBlock",
   inject: ["leftRightPadding", "maxWidthImg"],
+  props: ["recipeObject"],
   data() {
-    return {};
+    return {
+      kkal: 0,
+    };
+  },
+  methods: {
+    ...mapActions(["getRecipeNutrition"]),
+  },
+  async mounted() {
+    const res = await this.getRecipeNutrition(this.recipeObject.id).then(
+      (response) => response
+    );
+    this.kkal = res.calories;
   },
 };
 </script>

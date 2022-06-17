@@ -2,14 +2,16 @@
   <div class="d-flex justify-content-between">
     <div>
       <h2>Good as</h2>
-      <ul class="d-flex flex-column">
+      <p v-if="!dishTypes || dishTypes.length == 0">No dish types found</p>
+      <ul class="d-flex flex-column" v-else>
         <li v-for="item in dishTypes" :key="item.id">{{ item }}</li>
       </ul>
     </div>
     <div class="stick"></div>
     <div>
       <h2>Diets</h2>
-      <ul class="d-flex flex-column">
+      <p v-if="!diets || diets.length == 0">No diets found</p>
+      <ul class="d-flex flex-column" v-else>
         <li v-for="item in diets" :key="item.id">{{ item }}</li>
       </ul>
     </div>
@@ -42,7 +44,8 @@ h2 {
   width: 2px;
   height: 100%;
 }
-li {
+li,
+p {
   font-size: calc(2em + 2px);
   font-weight: 600;
   color: $brown;

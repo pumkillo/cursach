@@ -1,29 +1,48 @@
 <template>
   <div class="needpad">
     <h1>Random a recipe</h1>
-    <button class="button">Random again</button>
-    <div class="briefInfo d-flex justify-content-between align-items-center">
+    <!-- <h1>{{ categoriesArray }}</h1> -->
+    <img src="@/assets/loading.gif" alt="loading" v-if="loading" />
+    <button class="button" v-else @click="getRandomRecipe">Random again</button>
+    <div
+      class="briefInfo d-flex justify-content-between align-items-center"
+      v-if="recipeID"
+    >
       <div class="d-flex flex-column">
-        <div class="d-flex justify-content-center">
+        <div class="brief d-flex justify-content-center align-items-center">
           <router-link
+            v-if="!loading"
             class="decoration"
-            :to="{ name: 'recipe', params: { id: 5 } }"
-            ><h3>Falafel Burger</h3></router-link
+            :to="{ name: 'recipe', params: { id: recipe.id } }"
+            ><h3>
+              {{
+                recipe.title.length > 16
+                  ? recipe.title.slice(0, 15) + "..."
+                  : recipe.title
+              }}
+            </h3></router-link
           >
-          <h3>336k</h3>
+          <h3>{{ calories }}kcal</h3>
         </div>
-        <RecipeCard :needBackColor="false" />
+        <RecipeCard :needBackColor="false" :recipeID="recipe.id" />
       </div>
-      <NutritionDiagrams :isColumn="true" />
-      <TasteWidgetById />
+      <NutritionDiagrams
+        :isColumn="true"
+        :recipeID="recipeID"
+        v-if="recipeID"
+      />
+      <TasteWidgetById :recipeID="recipeID" v-if="recipeID" />
     </div>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("Recipes");
 import RecipeCard from "@/components/RecipeCard.vue";
 import NutritionDiagrams from "@/components/NutritionDiagrams.vue";
 import TasteWidgetById from "../components/TasteWidgetById.vue";
+
 export default {
   name: "RandomReciepe",
   components: {
@@ -32,7 +51,41 @@ export default {
     TasteWidgetById,
   },
   data() {
-    return {};
+    return {
+      loading: true,
+      recipe: {},
+      calories: 0,
+    };
+  },
+  computed: {
+    recipeID() {
+      return this.recipe.id;
+    },
+  },
+  mounted() {
+    this.getRandomRecipe();
+  },
+  methods: {
+    ...mapActions({
+      randomRecipe: "randomRecipe/randomRecipe",
+      getRecipeNutrition: "recipeNutrition/getRecipeNutrition",
+    }),
+    async getRandomRecipe() {
+      const res = await this.randomRecipe()
+        .catch((this.loading = true))
+        .then((response) => response);
+      if (res.recipes) {
+        this.recipe = res.recipes[0];
+        this.loading = false;
+        this.getCalories();
+      }
+    },
+    async getCalories() {
+      const res2 = await this.getRecipeNutrition(this.recipe.id).then(
+        (response) => response
+      );
+      this.calories = res2.calories;
+    },
   },
 };
 </script>
@@ -43,10 +96,14 @@ export default {
   margin-top: 60px;
   gap: 90px;
 }
+.brief {
+  padding: 0 20px;
+}
 .button {
   font-size: 3em;
   padding: 15px 20px;
   margin: 0 auto;
+  margin-top: 60px;
 }
 h3 {
   font-weight: 500;
