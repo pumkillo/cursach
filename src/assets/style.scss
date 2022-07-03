@@ -126,7 +126,7 @@ input:focus {
 }
 .side-panel {
   position: sticky;
-  top: 250px;
+  top: 105px;
   height: fit-content;
 }
 .side-panel > p {
@@ -173,6 +173,7 @@ input:focus {
 img[alt="loading"] {
   display: flex;
   max-width: 100px;
+  height: fit-content;
   margin: 0 auto;
 }
 

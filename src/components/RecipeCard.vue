@@ -32,7 +32,7 @@ export default {
         lowFodmap: this.recipe.lowFodmap,
       };
       let arr = Object.entries(obj);
-      const res = arr.filter((pair) => pair[1] == true);
+      const res = arr.filter((pair) => pair[1] === true);
       return res;
     },
   },
@@ -53,9 +53,9 @@ export default {
     ...mapActions(["getAllRecipeInfo"]),
     async getRecipeCard() {
       if (this.recipeID) {
-        const res = await this.getAllRecipeInfo(this.recipeID).then(
-          (response) => response
-        );
+        const res = await this.getAllRecipeInfo({
+          recipeID: this.recipeID,
+        }).then((response) => response);
         this.recipe = res;
       }
     },

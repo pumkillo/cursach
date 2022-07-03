@@ -4,7 +4,7 @@ const recipeInfo = {
   getters: {},
   mutations: {},
   actions: {
-    async getAllRecipeInfo({ rootState }, recipeID, nutrition = false) {
+    async getAllRecipeInfo({ rootState }, { recipeID, nutrition = false }) {
       const res = await fetch(
         rootState.baseURLRecipes +
           "/" +

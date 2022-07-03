@@ -42,7 +42,7 @@ export default {
     createCategoriesArray(separator = "") {
       if (
         this.ingredient.aisle.indexOf(separator) !== -1 &&
-        this.categoriesArray.length == 0
+        this.categoriesArray.length === 0
       ) {
         this.ingredient.aisle.split(separator).forEach((element) => {
           this.categoriesArray.push([element, true]);

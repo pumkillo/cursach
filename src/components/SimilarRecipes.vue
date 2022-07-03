@@ -1,19 +1,20 @@
 <template>
   <div class="similar d-flex flex-column">
     <h4>Similar recipes</h4>
-    <h5 v-if="similarRecipes.length == 0">No similar recipes found.</h5>
+    <h5 v-if="similarRecipes.length === 0">No similar recipes found.</h5>
     <div class="d-flex justify-content-between" v-else>
       <div
         class="recipe d-flex flex-column"
         v-for="recipe in similarRecipes"
         :key="recipe.id"
       >
-        <img :src="recipe.image" alt="" />
         <router-link
           class="decoration"
           :to="{ name: 'recipe', params: { id: recipe.id } }"
-          ><h3>{{ recipe.title }}</h3></router-link
         >
+          <img :src="recipe.image" alt="recipe image" />
+          <h3>{{ recipe.title }}</h3>
+        </router-link>
       </div>
     </div>
   </div>

@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      ingredient: "",
+      ingredient: {},
     };
   },
   computed: {
@@ -48,6 +48,7 @@ export default {
       await this.getAllIngredientInfo(this.ingredientID).then(
         (response) => (this.ingredient = response)
       );
+      console.log(this.ingredient);
     },
   },
 };

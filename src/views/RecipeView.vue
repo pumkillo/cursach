@@ -2,7 +2,7 @@
   <div class="needpad">
     <div class="title d-flex justify-content-center align-items-center">
       <h1>{{ recipe.title }}</h1>
-      <img src="@/assets/icons/likeNotFill.svg" alt="" />
+      <LikeRecipe :recipeID="recipeID" />
     </div>
     <div class="full-info d-flex flex-row justify-content-between">
       <div class="d-flex flex-column align-items-center">
@@ -38,6 +38,7 @@ import DishTypesAndDiets from "@/components/DishTypesAndDiets.vue";
 import RecipeInstruction from "@/components/RecipeInstruction.vue";
 import SimilarRecipes from "@/components/SimilarRecipes.vue";
 import NutritionalInformation from "@/components/NutritionalInformation.vue";
+import LikeRecipe from "@/components/LikeRecipe.vue";
 
 export default {
   name: "RecipeView",
@@ -49,6 +50,7 @@ export default {
     RecipeInstruction,
     SimilarRecipes,
     NutritionalInformation,
+    LikeRecipe,
   },
   data() {
     return {
@@ -73,7 +75,7 @@ export default {
     ...mapActions(["getAllRecipeInfo"]),
     async getRecipeInfo() {
       if (this.recipeID) {
-        await this.getAllRecipeInfo(this.recipeID).then(
+        await this.getAllRecipeInfo({ recipeID: this.recipeID }).then(
           (response) => (this.recipe = response)
         );
       }

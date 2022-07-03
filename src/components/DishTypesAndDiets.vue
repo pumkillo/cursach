@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between">
     <div>
       <h2>Good as</h2>
-      <p v-if="!dishTypes || dishTypes.length == 0">No dish types found</p>
+      <p v-if="!dishTypes || dishTypes.length === 0">No dish types found</p>
       <ul class="d-flex flex-column" v-else>
         <li v-for="item in dishTypes" :key="item.id">{{ item }}</li>
       </ul>
@@ -10,7 +10,7 @@
     <div class="stick"></div>
     <div>
       <h2>Diets</h2>
-      <p v-if="!diets || diets.length == 0">No diets found</p>
+      <p v-if="!diets || diets.length === 0">No diets found</p>
       <ul class="d-flex flex-column" v-else>
         <li v-for="item in diets" :key="item.id">{{ item }}</li>
       </ul>
@@ -55,6 +55,6 @@ p {
   gap: 3px;
 }
 .justify-content-between {
-  max-width: 380px;
+  padding: 0 20px;
 }
 </style>

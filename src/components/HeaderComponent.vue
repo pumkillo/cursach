@@ -2,7 +2,9 @@
   <div class="header">
     <div class="d-flex justify-content-between">
       <router-link :to="{ name: 'main' }">Main page</router-link>
-      <router-link :to="{ name: 'favorites' }">Favorites</router-link>
+      <router-link :to="{ name: 'favorites', query: { filter: 'date' } }"
+        >Favorites</router-link
+      >
       <router-link :to="{ name: 'filterSearch' }">Filter search</router-link>
       <router-link :to="{ name: 'quickAnswer' }">Quick answer</router-link>
       <router-link :to="{ name: 'randomReciepe' }">Random reciepe</router-link>

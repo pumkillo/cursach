@@ -41,7 +41,7 @@ import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("Recipes");
 import RecipeCard from "@/components/RecipeCard.vue";
 import NutritionDiagrams from "@/components/NutritionDiagrams.vue";
-import TasteWidgetById from "../components/TasteWidgetById.vue";
+import TasteWidgetById from "@/components/TasteWidgetById.vue";
 
 export default {
   name: "RandomReciepe",
@@ -94,7 +94,7 @@ export default {
 @import "@/assets/variables.scss";
 .briefInfo {
   margin-top: 60px;
-  gap: 90px;
+  gap: 70px;
 }
 .brief {
   padding: 0 20px;

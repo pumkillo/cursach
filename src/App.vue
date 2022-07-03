@@ -12,6 +12,11 @@ export default {
   components: {
     HeaderComponent,
   },
+  mounted() {
+    if (!localStorage.getItem("liked")) {
+      localStorage.setItem("liked", "");
+    }
+  },
 };
 </script>
 

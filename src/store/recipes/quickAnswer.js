@@ -22,14 +22,6 @@ const quickAnswer = {
           "&apiKey=" +
           process.env.VUE_APP_API_KEY
       ).then((response) => response.json());
-      // let res = new Promise(function (resolve, reject) {
-      //   resolve({
-      //     answer:
-      //       "In 2 how much is in apples, there are 16.74 mg of Vitamin C. This amount covers 20% of your daily needs of Vitamin C.",
-      //     image: "https://spoonacular.com/cdn/ingredients_100x100/apple.jpg",
-      //     type: "NUTRITION",
-      //   });
-      // }).then((response) => response);
       if (Object.keys(res) != 0) {
         commit("changeAnswerQuery", query);
       }

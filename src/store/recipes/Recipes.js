@@ -8,6 +8,7 @@ import tasteWidget from "./tasteWidget.js";
 import similarRecipes from "./similarRecipes.js";
 import recipeImage from "./recipeImage.js";
 import recipeNutritionCPF from "./recipeNutritionCPF.js";
+import ingredientsSearch from "./ingredientsSearch.js";
 
 const Recipes = {
   namespaced: true,
@@ -26,6 +27,7 @@ const Recipes = {
     similarRecipes: similarRecipes,
     recipeImage: recipeImage,
     recipeNutritionCPF: recipeNutritionCPF,
+    ingredientsSearch: ingredientsSearch,
   },
 };
 export default Recipes;

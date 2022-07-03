@@ -18,7 +18,7 @@
       </div>
       <div class="answer d-flex flex-column justify-content-start">
         <h3>Answer</h3>
-        <h5 v-if="querySearch == ''">Type a question to get an answer</h5>
+        <h5 v-if="querySearch === ''">Type a question to get an answer</h5>
         <h5 v-else-if="error">No answer found for that question</h5>
         <img src="@/assets/loading.gif" alt="loading" v-else-if="loading" />
 
@@ -55,7 +55,7 @@ export default {
   },
   watch: {
     querySearch(newValue) {
-      newValue == "" ? (this.loading = true) : this.getResult();
+      newValue === "" ? (this.loading = true) : this.getResult();
     },
   },
   methods: {

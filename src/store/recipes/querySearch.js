@@ -14,12 +14,17 @@ const querySearch = {
     },
   },
   actions: {
-    async getQuerySearch({ commit, rootState }, query) {
+    async getQuerySearch(
+      { commit, rootState },
+      { query, addRecipeNutrition = false }
+    ) {
       const res = await fetch(
         rootState.baseURLRecipes +
           "/complexSearch?query=" +
           query +
-          "&apiKey=" +
+          "&addRecipeNutrition=" +
+          addRecipeNutrition +
+          "&number=12&apiKey=" +
           process.env.VUE_APP_API_KEY
       ).then((response) => response.json());
       if (res.results.length != 0) {

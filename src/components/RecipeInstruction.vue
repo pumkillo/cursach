@@ -1,7 +1,7 @@
 <template>
   <div class="instruction d-flex flex-column">
     <h4>Instruction</h4>
-    <h5 v-if="response.length == 0">No instruction found.</h5>
+    <h5 v-if="response.length === 0">No instruction found.</h5>
     <div class="steps d-flex flex-column" v-for="res in response" :key="res.id">
       <p>{{ res.name }}</p>
       <div
@@ -99,6 +99,12 @@ img {
 }
 .steps {
   gap: 25px;
+  margin-bottom: 30px;
+}
+.steps > p {
+  font-size: 2.5em;
+  font-weight: 500;
+  text-indent: 0;
 }
 .step {
   gap: 15px;

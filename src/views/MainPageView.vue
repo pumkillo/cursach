@@ -4,8 +4,7 @@
     <input type="text" v-model.lazy="querySearch" placeholder="Burger" />
     <img src="@/assets/icons/lupa.svg" alt="lupa" />
   </div>
-  <h5 v-if="querySearch == ''">Type a query to find recipes</h5>
-  <h5 v-else-if="error">No recipes found for this query</h5>
+  <h5 v-if="querySearch === ''">Type a query to find recipes</h5>
   <img src="@/assets/loading.gif" alt="loading" v-else-if="loading" />
   <RecipesBlocks
     maxWidth="1600"
@@ -13,6 +12,7 @@
     v-else-if="results"
     :results="results"
   />
+  <h5 v-if="error">No recipes found for this query</h5>
 </template>
 
 <script>
@@ -51,20 +51,26 @@ export default {
   },
   watch: {
     querySearch(newValue) {
-      newValue == "" ? (this.loading = true) : this.getResult();
+      newValue === "" ? (this.loading = true) : this.getResult();
     },
   },
   methods: {
     ...mapActions(["getQuerySearch"]),
     async getResult() {
-      await this.getQuerySearch(this.querySearch)
+      await this.getQuerySearch({
+        query: this.querySearch,
+        addRecipeNutrition: true,
+      })
         .then((this.loading = true))
         .then((this.error = false))
         .then((response) => (this.response = response));
-      if (this.results.length != 0) {
-        this.loading = false;
+      if (this.results.length === 0) {
+        setTimeout(() => {
+          this.error = true;
+          this.loading = false;
+        }, 2500);
       } else {
-        setTimeout(() => (this.error = true), 2500);
+        this.loading = false;
       }
     },
   },
@@ -74,7 +80,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/variables.scss";
 .search {
-  max-width: 340px;
+  max-width: 490px;
 }
 input:focus-visible,
 input:focus {
