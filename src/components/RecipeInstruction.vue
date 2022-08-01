@@ -15,24 +15,38 @@
         <div
           class="step-illustrations d-flex flex-row flex-wrap justify-content-center align-items-end"
         >
-          <router-link
-            :to="{ name: 'ingredient', params: { id: ingredient.id } }"
-            class="step-illustration d-flex flex-column"
-            v-for="ingredient in step.ingredients"
-            :key="ingredient.id"
-          >
-            <img
-              :src="baseURLIngredients + ingredient.image"
-              :alt="ingredient.name"
-              v-if="ingredient.image"
-            />
-            <img
-              src="@/assets/icons/ingredient.svg"
-              alt="ingredient none"
-              v-else
-            />
-            <p>{{ ingredient.name }}</p>
-          </router-link>
+          <div v-for="ingredient in step.ingredients" :key="ingredient.id">
+            <router-link
+              v-if="ingredient.id !== 0"
+              :to="{ name: 'ingredient', params: { id: ingredient.id } }"
+              class="step-illustration d-flex flex-column"
+            >
+              <img
+                :src="baseURLIngredients + ingredient.image"
+                :alt="ingredient.name"
+                v-if="ingredient.image"
+              />
+              <img
+                src="@/assets/icons/ingredient.svg"
+                alt="ingredient none"
+                v-else
+              />
+              <p>{{ ingredient.name }}</p>
+            </router-link>
+            <div class="step-illustration d-flex flex-column" v-else>
+              <img
+                :src="baseURLIngredients + ingredient.image"
+                :alt="ingredient.name"
+                v-if="ingredient.image"
+              />
+              <img
+                src="@/assets/icons/ingredient.svg"
+                alt="ingredient none"
+                v-else
+              />
+              <p>{{ ingredient.name }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +54,6 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("Recipes/recipeInstruction");
 export default {

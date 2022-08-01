@@ -41,7 +41,7 @@
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("Recipes/recipeNutrition");
 export default {
-  name: "NutritionalInformation",
+  name: "NutritionalInformationRecipe",
   props: ["recipeID"],
   data() {
     return {

@@ -8,7 +8,7 @@
           <div class="d-flex" v-for="(item, index) in ingredients" :key="index">
             <input type="text" class="input" v-model="ingredients[index]" />
             <div
-              class="d-flex justify-content-center align=items-center image"
+              class="d-flex justify-content-center image"
               @click="delteItem(item)"
             >
               <img src="@/assets/icons/minus.svg" alt="" />
@@ -48,6 +48,7 @@ export default {
     return {
       leftRightPadding: 15,
       maxWidthImg: 310,
+      maxWidthTitle: 270,
     };
   },
   data() {

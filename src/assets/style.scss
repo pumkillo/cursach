@@ -27,6 +27,11 @@ body {
   margin: 0 auto;
   max-width: 1600px;
 }
+.title {
+  gap: 10px;
+  margin: 60px 0;
+  text-transform: capitalize;
+}
 
 h1 {
   color: $black;
@@ -83,6 +88,15 @@ h5 {
   src: url("@/assets/fonts/Raleway/Raleway-Medium.ttf");
 }
 
+.header a.router-link-active::after {
+  content: "";
+  height: 2px;
+  width: 100%;
+  margin-top: 10px;
+  background-color: $white;
+  border-radius: 2px;
+}
+
 .header {
   position: sticky;
   z-index: 1000;
@@ -126,6 +140,7 @@ input:focus {
 }
 .side-panel {
   position: sticky;
+  margin-right: 20px;
   top: 105px;
   height: fit-content;
 }
@@ -157,7 +172,6 @@ input:focus {
 .search {
   display: flex;
   margin: 0 auto;
-  // width: 100%;
   margin-bottom: 35px;
 }
 .search > img {
@@ -184,4 +198,11 @@ a {
 b,
 i {
   font-size: inherit;
+}
+
+.column:hover {
+  background-color: rgba($green, 0.5);
+}
+.column > p {
+  padding-left: 10px;
 }

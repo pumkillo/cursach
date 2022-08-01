@@ -61,7 +61,6 @@ export default {
   border-radius: 1em;
   gap: 15px;
   max-width: 490px;
-  align-self: flex-start;
 }
 img {
   border-radius: 0.5em;

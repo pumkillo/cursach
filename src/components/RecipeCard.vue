@@ -3,7 +3,8 @@
     class="recipeCard d-flex flex-column"
     :class="{ backGroundColor: needBackColor }"
   >
-    <img :src="recipe.image" alt="Recipe Image" />
+    <img :src="recipe.image" alt="Recipe Image" v-if="recipe.image" />
+    <img src="@/assets/undefined.jpg" alt="Recipe Image" v-else />
     <RecIngrCategories :categoriesArray="categoriesArray" />
   </div>
 </template>

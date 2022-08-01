@@ -16,6 +16,16 @@ const recipeInfo = {
       ).then((response) => response.json());
       return res;
     },
+    async getRecipeNutritionCPF(_ctx, { recipeObject }) {
+      let res = recipeObject.nutrition.nutrients
+        .filter(
+          (nutr) =>
+            ["carbohydrates", "fat", "protein"].indexOf(nutr.toLowerCase()) !==
+            0
+        )
+        .sort();
+      return [{ fat: res[1] }, { carbs: res[0] }, { protein: res[2] }];
+    },
   },
 };
 export default recipeInfo;

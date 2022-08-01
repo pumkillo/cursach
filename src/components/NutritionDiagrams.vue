@@ -3,45 +3,26 @@
     class="d-flex justify-content-between"
     :class="{ 'flex-column': isColumn, 'flex-row': !isColumn }"
   >
-    <NutritionPieDiagram v-for="el in info" :key="el.id" :obj="el" :sum="sum" />
+    <NutritionPieDiagram
+      v-for="el in Object.entries(nutrition)"
+      :key="el.id"
+      :obj="el"
+    />
   </div>
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapActions } = createNamespacedHelpers("Recipes/recipeNutritionCPF");
-
 import NutritionPieDiagram from "@/components/NutritionPieDiagram.vue";
 export default {
   name: "NutritionDiagrams",
-  props: ["isColumn", "recipeID"],
+  props: ["isColumn", "nutrition"],
   components: { NutritionPieDiagram },
   data() {
-    return {
-      info: [],
-      sum: 0,
-    };
+    return {};
   },
-  mounted() {
-    this.getRecipeNutritionForDiagrams();
-  },
-  watch: {
-    recipeID() {
-      this.sum = 0;
-      this.getRecipeNutritionForDiagrams();
-    },
-  },
-  methods: {
-    ...mapActions(["getRecipeNutritionCPF"]),
-    async getRecipeNutritionForDiagrams() {
-      await this.getRecipeNutritionCPF(this.recipeID).then(
-        (response) => (this.info = response)
-      );
-      Object.values(this.info).forEach((element) => {
-        this.sum += Number(Object.values(element)[0].replace("g", ""));
-      });
-    },
-  },
+  mounted() {},
+  watch: {},
+  methods: {},
 };
 </script>
 

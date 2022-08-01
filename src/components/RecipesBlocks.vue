@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-wrap recipes"
+    class="d-flex flex-wrap align-items-center recipes"
     v-bind:style="{ maxWidth: maxWidth + 'px', justifyContent: justify }"
   >
     <RecipeBlock v-for="item in results" :key="item.id" :recipeObject="item" />

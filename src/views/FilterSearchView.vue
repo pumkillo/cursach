@@ -9,9 +9,9 @@
             <p>Carbs</p>
             <div class="minmax d-flex align-items-center">
               <p>min</p>
-              <input type="text" value="0" pattern="[0-9]{,3}" min="0" />
+              <input type="text" value="0" pattern="[0-9]{0,3}" min="0" />
               <p>max</p>
-              <input type="text" value="100" pattern="[0-9]{,3}" max="800" />
+              <input type="text" value="100" pattern="[0-9]{0,3}" max="800" />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ const recipeNutrition = {
   getters: {},
   mutations: {},
   actions: {
-    async getRecipeNutrition(context, recipeID) {
+    async getRecipeNutrition(_ctx, recipeID) {
       const res = await fetch(
         process.env.VUE_APP_FETCH_BASE_URL +
           "/recipes/" +

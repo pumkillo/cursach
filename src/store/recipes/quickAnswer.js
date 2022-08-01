@@ -22,7 +22,7 @@ const quickAnswer = {
           "&apiKey=" +
           process.env.VUE_APP_API_KEY
       ).then((response) => response.json());
-      if (Object.keys(res) != 0) {
+      if (Object.keys(res) !== 0) {
         commit("changeAnswerQuery", query);
       }
       return res;

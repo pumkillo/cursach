@@ -7,7 +7,7 @@
     <div class="full-info d-flex flex-row justify-content-between">
       <div class="d-flex flex-column align-items-center">
         <RecipeCard :needBackColor="true" :recipeID="recipeID" />
-        <NutritionalInformation :recipeID="recipeID" />
+        <NutritionalInformationRecipe :recipeID="recipeID" />
         <TasteWidgetById :recipeID="recipeID" />
         <SimilarRecipes :recipeID="recipeID" />
       </div>
@@ -16,7 +16,10 @@
           :dishTypes="recipe.dishTypes"
           :diets="recipe.diets"
         />
-        <NutritionDiagrams :recipeID="recipeID" />
+        <NutritionDiagrams
+          v-if="recipe.nutrition && recipe.nutrition.caloricBreakdown"
+          :nutrition="recipe.nutrition.caloricBreakdown"
+        />
         <div class="description">
           <h4>Be ready in {{ recipe.readyInMinutes }} minutes</h4>
           <p v-html="recipe.summary"></p>
@@ -37,7 +40,7 @@ import TasteWidgetById from "../components/TasteWidgetById.vue";
 import DishTypesAndDiets from "@/components/DishTypesAndDiets.vue";
 import RecipeInstruction from "@/components/RecipeInstruction.vue";
 import SimilarRecipes from "@/components/SimilarRecipes.vue";
-import NutritionalInformation from "@/components/NutritionalInformation.vue";
+import NutritionalInformationRecipe from "@/components/NutritionalInformationRecipe.vue";
 import LikeRecipe from "@/components/LikeRecipe.vue";
 
 export default {
@@ -49,7 +52,7 @@ export default {
     DishTypesAndDiets,
     RecipeInstruction,
     SimilarRecipes,
-    NutritionalInformation,
+    NutritionalInformationRecipe,
     LikeRecipe,
   },
   data() {
@@ -75,9 +78,10 @@ export default {
     ...mapActions(["getAllRecipeInfo"]),
     async getRecipeInfo() {
       if (this.recipeID) {
-        await this.getAllRecipeInfo({ recipeID: this.recipeID }).then(
-          (response) => (this.recipe = response)
-        );
+        await this.getAllRecipeInfo({
+          recipeID: this.recipeID,
+          nutrition: true,
+        }).then((response) => (this.recipe = response));
       }
     },
   },
@@ -89,11 +93,13 @@ export default {
 .flex-row {
   gap: 20px;
 }
+.full-info {
+  margin-bottom: 50px;
+}
 .full-info > .flex-column {
   max-width: 500px;
   width: 100%;
   gap: 50px;
-  margin-bottom: 50px;
 }
 .full-info > .flex-column:nth-child(2) {
   padding-top: 65px;
@@ -101,10 +107,7 @@ export default {
 h1 {
   margin: 0 !important;
 }
-.title {
-  gap: 10px;
-  margin: 60px 0;
-}
+
 .title > img {
   max-width: 32px;
   height: fit-content;

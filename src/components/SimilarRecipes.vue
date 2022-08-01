@@ -49,7 +49,7 @@ export default {
       const res = await this.getSimilarRecipes(this.recipeID).then(
         (response) => response
       );
-      if (res.length != 3) {
+      if (res.length !== 3) {
         res.splice(-1, 1);
         this.similarRecipes = res;
       }

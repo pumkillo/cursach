@@ -27,7 +27,7 @@ const querySearch = {
           "&number=12&apiKey=" +
           process.env.VUE_APP_API_KEY
       ).then((response) => response.json());
-      if (res.results.length != 0) {
+      if (res.results.length !== 0) {
         commit("changeSearchQuery", query);
       }
       return res;

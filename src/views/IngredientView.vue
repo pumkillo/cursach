@@ -5,12 +5,19 @@
     </div>
     <div class="full-info d-flex flex-row justify-content-between">
       <div class="d-flex flex-column align-items-center">
-        <IngredientCard :ingredientID="ingredientID" />
-        <NutritionalInformation />
+        <NutritionalInformationIngredient
+          v-if="ingredient.nutrition"
+          :nutrients="ingredient.nutrition.nutrients"
+        />
       </div>
       <div class="d-flex flex-column align-items-center">
-        <NutritionDiagrams />
-        <IngredientSubstitutes />
+        <IngredientCard :ingredientID="ingredientID" />
+        <NutritionDiagrams
+          v-if="ingredient.nutrition && ingredient.nutrition.caloricBreakdown"
+          :isColumn="false"
+          :nutrition="ingredient.nutrition.caloricBreakdown"
+        />
+        <IngredientSubstitutes :ingredientID="ingredientID" />
       </div>
     </div>
   </div>
@@ -20,7 +27,7 @@
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("Ingredients/ingredientInfo");
 import NutritionDiagrams from "@/components/NutritionDiagrams.vue";
-import NutritionalInformation from "@/components/NutritionalInformation.vue";
+import NutritionalInformationIngredient from "@/components/NutritionalInformationIngredient.vue";
 import IngredientCard from "@/components/IngredientCard.vue";
 import IngredientSubstitutes from "@/components/IngredientSubstitutes.vue";
 
@@ -28,7 +35,7 @@ export default {
   name: "IngredienteView",
   components: {
     NutritionDiagrams,
-    NutritionalInformation,
+    NutritionalInformationIngredient,
     IngredientCard,
     IngredientSubstitutes,
   },
@@ -42,13 +49,15 @@ export default {
       return this.$route.params.id;
     },
   },
+  mounted() {
+    this.getInfo();
+  },
   methods: {
     ...mapActions(["getAllIngredientInfo"]),
     async getInfo() {
       await this.getAllIngredientInfo(this.ingredientID).then(
         (response) => (this.ingredient = response)
       );
-      console.log(this.ingredient);
     },
   },
 };
@@ -64,9 +73,6 @@ export default {
   width: 100%;
   gap: 50px;
   margin-bottom: 50px;
-}
-.full-info > .flex-column:nth-child(2) {
-  padding-top: 65px;
 }
 h1 {
   margin: 0 !important;

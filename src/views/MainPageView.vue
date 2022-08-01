@@ -38,6 +38,7 @@ export default {
     return {
       leftRightPadding: 35,
       maxWidthImg: 450,
+      maxWidthTitle: 400,
     };
   },
   computed: {

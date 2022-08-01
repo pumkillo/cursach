@@ -53,14 +53,15 @@ export default {
     return {
       leftRightPadding: 15,
       maxWidthImg: 450,
+      maxWidthTitle: 400,
     };
   },
   data() {
     return {
       inverseSortBy: false,
-      low: "low",
-      high: "high",
-      results: [],
+      low: "last added",
+      high: "first added",
+      results: {},
       constRes: [],
       filters: [
         "date",
@@ -94,8 +95,8 @@ export default {
       this.checkActiveFilter();
       switch (this.activeFilter) {
         case this.filters[0]:
-          this.low = "last";
-          this.high = "first";
+          this.low = "last added";
+          this.high = "first added";
           break;
         case this.filters[1]:
           this.low = "A";

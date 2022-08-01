@@ -5,7 +5,7 @@ const recipeNutritionCPF = {
   getters: {},
   mutations: {},
   actions: {
-    async getRecipeNutritionCPF(context, recipeID) {
+    async getRecipeNutritionCPF(_ctx, recipeID) {
       const res = await fetch(
         process.env.VUE_APP_FETCH_BASE_URL +
           "/recipes/" +

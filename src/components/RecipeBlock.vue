@@ -24,8 +24,8 @@
       <div class="d-flex flex-column">
         <p v-if="recipeObject.title" class="recipe-title">
           {{
-            recipeObject.title.length > 40
-              ? recipeObject.title.slice(0, 39) + "..."
+            recipeObject.title.length > maxCountSymbols
+              ? recipeObject.title.slice(0, maxCountSymbols - 1) + "..."
               : recipeObject.title
           }}
         </p>
@@ -52,8 +52,8 @@ import LikeRecipe from "./LikeRecipe.vue";
 
 export default {
   name: "RecipeBlock",
-  inject: ["leftRightPadding", "maxWidthImg"],
-  props: ["recipeObject"],
+  inject: ["leftRightPadding", "maxWidthImg", "maxWidthTitle"],
+  props: ["recipeObject", "maxwidth"],
   data() {
     return {
       kkal: 0,
@@ -63,13 +63,17 @@ export default {
   mounted() {
     this.getThisRecipeNutrition();
   },
+  computed: {
+    maxCountSymbols() {
+      return Math.floor(this.maxWidthTitle / 10);
+    },
+  },
   methods: {
     ...mapActions(["getRecipeNutrition"]),
     async getThisRecipeNutrition() {
       await this.getRecipeNutrition(this.recipeObject.id).then(
         (response) => (this.kkal = Number(response.calories.replace("k", "")))
       );
-      console.log(this.kkal);
     },
   },
 };
@@ -87,7 +91,7 @@ export default {
   gap: 15px;
 }
 .recipe-title {
-  max-width: calc(310px - 32px - 10px);
+  max-width: 400px;
 }
 img {
   border-radius: 0.5em;

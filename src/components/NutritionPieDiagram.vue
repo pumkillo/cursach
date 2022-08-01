@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex align-items-center justify-content-center">
-    <p class="name">{{ Object.keys(obj)[0] }}</p>
+    <p class="name">{{ title }}</p>
     <div class="pie" :style="{ '--p': percent }"></div>
   </div>
 </template>
@@ -8,15 +8,16 @@
 <script>
 export default {
   name: "NutritionPieDiagram",
-  props: ["obj", "sum"],
+  props: ["obj"],
   data() {
     return {};
   },
   computed: {
+    title() {
+      return this.obj[0].replace("percent", "");
+    },
     percent() {
-      return Math.round(
-        (Object.values(this.obj)[0].replace("g", "") / this.sum) * 100
-      );
+      return Math.round(this.obj[1]);
     },
   },
 };

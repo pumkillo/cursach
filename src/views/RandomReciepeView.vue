@@ -16,8 +16,8 @@
             :to="{ name: 'recipe', params: { id: recipe.id } }"
             ><h3>
               {{
-                recipe.title.length > 16
-                  ? recipe.title.slice(0, 15) + "..."
+                recipe.title.length > 17
+                  ? recipe.title.slice(0, 16) + "..."
                   : recipe.title
               }}
             </h3></router-link
@@ -28,7 +28,7 @@
       </div>
       <NutritionDiagrams
         :isColumn="true"
-        :recipeID="recipeID"
+        :nutrition="recipeNutrition"
         v-if="recipeID"
       />
       <TasteWidgetById :recipeID="recipeID" v-if="recipeID" />
@@ -54,6 +54,7 @@ export default {
     return {
       loading: true,
       recipe: {},
+      recipeNutrition: [],
       calories: 0,
     };
   },
@@ -68,7 +69,7 @@ export default {
   methods: {
     ...mapActions({
       randomRecipe: "randomRecipe/randomRecipe",
-      getRecipeNutrition: "recipeNutrition/getRecipeNutrition",
+      getAllRecipeInfo: "recipeInfo/getAllRecipeInfo",
     }),
     async getRandomRecipe() {
       const res = await this.randomRecipe()
@@ -77,14 +78,21 @@ export default {
       if (res.recipes) {
         this.recipe = res.recipes[0];
         this.loading = false;
-        this.getCalories();
+        this.getNutrition();
       }
     },
-    async getCalories() {
-      const res2 = await this.getRecipeNutrition(this.recipe.id).then(
-        (response) => response
-      );
-      this.calories = res2.calories;
+    async getNutrition() {
+      await this.getAllRecipeInfo({
+        recipeID: this.recipe.id,
+        nutrition: true,
+      }).then((response) => {
+        this.recipeNutrition = response.nutrition.caloricBreakdown;
+        this.calories = Math.round(
+          response.nutrition.nutrients.find(
+            (el) => el.name.toLowerCase() === "calories"
+          ).amount
+        );
+      });
     },
   },
 };

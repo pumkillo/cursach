@@ -6,7 +6,7 @@
       :key="item.id"
     >
       <div class="circle"></div>
-      <p v-if="$route.name != 'ingredient'">{{ toKebab(item[0]) }}</p>
+      <p v-if="$route.name !== 'ingredient'">{{ toKebab(item[0]) }}</p>
       <p v-else>{{ item[0] }}</p>
     </div>
   </div>
