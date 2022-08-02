@@ -9,6 +9,7 @@ import similarRecipes from "./similarRecipes.js";
 import recipeImage from "./recipeImage.js";
 import recipeNutritionCPF from "./recipeNutritionCPF.js";
 import ingredientsSearch from "./ingredientsSearch.js";
+import ingredientsSearchFilter from "./ingredientsSearchFilter.js";
 
 const Recipes = {
   namespaced: true,
@@ -28,6 +29,7 @@ const Recipes = {
     recipeImage: recipeImage,
     recipeNutritionCPF: recipeNutritionCPF,
     ingredientsSearch: ingredientsSearch,
+    ingredientsSearchFilter: ingredientsSearchFilter,
   },
 };
 export default Recipes;

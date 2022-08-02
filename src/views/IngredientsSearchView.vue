@@ -33,8 +33,6 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapGetters, mapMutations } = createNamespacedHelpers(
   "Recipes/ingredientsSearch"
@@ -111,7 +109,7 @@ export default {
 @import "@/assets/variables.scss";
 .ingredients {
   width: calc(100vw - 40px);
-  max-width: 340px;
+  max-width: 360px;
   gap: 15px;
 }
 input:focus-visible,
@@ -143,5 +141,6 @@ input:focus {
 }
 h5 {
   width: 100%;
+  margin-top: 40px;
 }
 </style>

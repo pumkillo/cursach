@@ -1,28 +1,48 @@
 <template>
   <div class="needpad">
-    <h1 class="sticky">Filter search</h1>
+    <h1>Filter search</h1>
     <div class="d-flex justify-content-between">
       <div class="d-flex flex-column side-panel">
         <p>Filters</p>
         <div class="filters d-flex flex-column">
-          <div class="input d-flex align-items-center justify-content-between">
-            <p>Carbs</p>
+          <div
+            class="input d-flex align-items-center justify-content-between"
+            v-for="item in filters"
+            :key="item.id"
+          >
+            <p class="d-title">{{ item.name }}</p>
             <div class="minmax d-flex align-items-center">
               <p>min</p>
-              <input type="text" value="0" pattern="[0-9]{0,3}" min="0" />
+              <input
+                type="text"
+                pattern="[0-9]{0,3}"
+                v-model="item.min"
+                @input="checkNumbers(item, 'min')"
+              />
               <p>max</p>
-              <input type="text" value="100" pattern="[0-9]{0,3}" max="800" />
+              <input
+                type="text"
+                pattern="[0-9]{0,3}"
+                v-model="item.max"
+                @input="checkNumbers(item, 'max')"
+              />
             </div>
           </div>
         </div>
-        <button class="button">Search</button>
+        <button class="button" @click="getResultRecipes">Search</button>
       </div>
-      <RecipesBlocks :maxWidth="700" justify="start" />
+      <RecipesBlocks :maxWidth="700" justify="start" :results="results" />
+      <img src="@/assets/loading.gif" alt="loading" v-if="loading" />
+      <h5 v-if="error">No recipes found for these filters</h5>
     </div>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapGetters, mapMutations } = createNamespacedHelpers(
+  "Recipes/ingredientsSearchFilter"
+);
 import RecipesBlocks from "@/components/RecipesBlocks.vue";
 export default {
   components: {
@@ -32,7 +52,45 @@ export default {
     return {
       leftRightPadding: 15,
       maxWidthImg: 310,
+      maxWidthTitle: 270,
     };
+  },
+  data() {
+    return {
+      results: [],
+      loading: false,
+      error: false,
+      filters: [],
+    };
+  },
+  mounted() {
+    this.getResultRecipes();
+    this.filters = Array.from(this.getItemsToFilter);
+  },
+  computed: {
+    ...mapGetters(["getItemsToFilter"]),
+  },
+  methods: {
+    ...mapActions(["getRecipes"]),
+    ...mapMutations(["changeItemsToFilter"]),
+    async getResultRecipes() {
+      this.results = [];
+      await this.getRecipes()
+        .then((res) => (this.results = res))
+        .then((this.loading = true))
+        .then((this.error = false));
+      if (this.results.length === 0) {
+        setTimeout(() => {
+          this.error = true;
+          this.loading = false;
+        }, 2500);
+      } else {
+        this.loading = false;
+      }
+    },
+    checkNumbers(item, key) {
+      item[key] = item[key].replace(/\D/, "");
+    },
   },
 };
 </script>
@@ -41,12 +99,12 @@ export default {
 @import "@/assets/variables.scss";
 .filters {
   width: calc(100vw - 40px);
-  max-width: 340px;
+  max-width: 360px;
   gap: 15px;
 }
 input {
   min-width: 50px;
-  max-width: 60px;
+  max-width: 65px;
   height: 30px;
   border: 0.5px solid $green;
   color: $green;
@@ -69,5 +127,12 @@ input:focus {
 }
 .minmax > input:nth-child(2) {
   margin-right: 20px;
+}
+.d-title {
+  text-transform: capitalize;
+}
+h5 {
+  margin-top: 40px;
+  width: 100%;
 }
 </style>
