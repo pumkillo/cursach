@@ -66,10 +66,10 @@ export default {
         .then((this.error = false))
         .then((response) => (this.response = response))
         .catch((res) => (this.response = ""));
-      if (Object.keys(this.response) !== 0) {
+      if (Object.keys(this.response).length !== 0) {
         this.loading = false;
       } else {
-        setTimeout(() => (this.error = true), 2500);
+        setTimeout((this.error = true), 2500);
       }
     },
   },

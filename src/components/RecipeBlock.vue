@@ -22,23 +22,18 @@
     </router-link>
     <div class="d-flex flex-row justify-content-between">
       <div class="d-flex flex-column">
-        <p v-if="recipeObject.title" class="recipe-title">
+        <p
+          v-if="recipeObject.title"
+          class="recipe-title"
+          :style="{ maxWidth: maxWidthTitle + 'px' }"
+        >
           {{
             recipeObject.title.length > maxCountSymbols
               ? recipeObject.title.slice(0, maxCountSymbols - 1) + "..."
               : recipeObject.title
           }}
         </p>
-        <!-- <p>{{ Math.floor(recipeObject.nutrition.nutrients[0].amount) }}kkal</p> -->
-        <p>{{ kkal }}kkal</p>
-        <!-- <p>fat - {{ recipeObject.nutrition.caloricBreakdown.percentFat }}%</p>
-        <p>
-          carbs - {{ recipeObject.nutrition.caloricBreakdown.percentCarbs }}%
-        </p>
-        <p>
-          protein -
-          {{ recipeObject.nutrition.caloricBreakdown.percentProtein }}%
-        </p> -->
+        <p>{{ Math.round(kkal) }}kkal</p>
       </div>
       <LikeRecipe :recipeID="recipeObject.id" />
     </div>
@@ -53,7 +48,7 @@ import LikeRecipe from "./LikeRecipe.vue";
 export default {
   name: "RecipeBlock",
   inject: ["leftRightPadding", "maxWidthImg", "maxWidthTitle"],
-  props: ["recipeObject", "maxwidth"],
+  props: ["recipeObject"],
   data() {
     return {
       kkal: 0,
@@ -71,9 +66,24 @@ export default {
   methods: {
     ...mapActions(["getRecipeNutrition"]),
     async getThisRecipeNutrition() {
-      await this.getRecipeNutrition(this.recipeObject.id).then(
-        (response) => (this.kkal = Number(response.calories.replace("k", "")))
-      );
+      let nutrients =
+        this.recipeObject.nutrition && this.recipeObject.nutrition.nutrients
+          ? this.recipeObject.nutrition.nutrients
+          : [];
+      this.kkal = this.recipeObject.calories ? this.recipeObject.calories : 0;
+      this.kkal =
+        nutrients.length !== 0
+          ? nutrients[
+              Array.from(nutrients, (x) => x.name.toLowerCase()).indexOf(
+                "calories"
+              )
+            ].amount
+          : 0;
+      if (this.kkal === 0) {
+        await this.getRecipeNutrition(this.recipeObject.id).then(
+          (response) => (this.kkal = Number(response.calories.replace("k", "")))
+        );
+      }
     },
   },
 };
@@ -91,7 +101,7 @@ export default {
   gap: 15px;
 }
 .recipe-title {
-  max-width: 400px;
+  word-break: break-word;
 }
 img {
   border-radius: 0.5em;

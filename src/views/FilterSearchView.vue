@@ -3,7 +3,7 @@
     <h1>Filter search</h1>
     <div class="d-flex justify-content-between">
       <div class="d-flex flex-column side-panel">
-        <p>Filters</p>
+        <p>Filters (in grams)</p>
         <div class="filters d-flex flex-column">
           <div
             class="input d-flex align-items-center justify-content-between"
@@ -15,14 +15,12 @@
               <p>min</p>
               <input
                 type="text"
-                pattern="[0-9]{0,3}"
                 v-model="item.min"
                 @input="checkNumbers(item, 'min')"
               />
               <p>max</p>
               <input
                 type="text"
-                pattern="[0-9]{0,3}"
                 v-model="item.max"
                 @input="checkNumbers(item, 'max')"
               />
@@ -76,7 +74,7 @@ export default {
     async getResultRecipes() {
       this.results = [];
       await this.getRecipes()
-        .then((res) => (this.results = res))
+        .then((response) => (this.results = response))
         .then((this.loading = true))
         .then((this.error = false));
       if (this.results.length === 0) {

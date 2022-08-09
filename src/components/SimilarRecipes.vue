@@ -21,7 +21,6 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("Recipes");
 export default {
@@ -54,9 +53,7 @@ export default {
         this.similarRecipes = res;
       }
       this.similarRecipes.forEach((recipe) => {
-        const recipeImage = this.getImage(recipe.id).then(
-          (response) => (recipe.image = response)
-        );
+        this.getImage(recipe.id).then((response) => (recipe.image = response));
       });
     },
     async getImage(id) {
